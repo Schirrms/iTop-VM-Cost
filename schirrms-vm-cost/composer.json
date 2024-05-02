@@ -1,0 +1,16 @@
+{
+  "config": {
+    "classmap-authoritative": true
+  },
+  "autoload": {
+    "psr-4": {
+      "Schirrms\\iTop\\Extension\\": "src"
+    }
+  },
+  "name": "schirrms/schirrms-vm-cost",
+  "type": "itop-extension",
+  "description": "Cost of a Virtual Machine",
+  "require": {
+    "composer-runtime-api": "^2.0"
+  }
+}
