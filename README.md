@@ -15,3 +15,7 @@ In this panel, each organiztion could have a value for :
 These are the base value. In an idela world, it should also be possible to set sone 'software' value (cost of the OS, on the backup if activatied…) But let's start light 😉
 
 Then, after those base values are given, a 'cost field' is computed for each Virtual Machine.
+
+## Other components
+
+The 'cost' logo is directly derived form the work of Arman: <https://thenounproject.com/creator/amanmana/>
