@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension format="1.0">
   <extension_code>schirrms-vm-cost</extension_code>
-  <version>0.0.1</version>
+  <version>0.0.2</version>
   <label><![CDATA[Cost of a Virtual Machine]]></label>
   <description><![CDATA[Display a VM cost based on the VM configuration (CPU, RAM, Disk)]]></description>
   <mandatory>false</mandatory>

@@ -16,14 +16,12 @@
         <naming>
           <format>%1$s</format>
           <attributes>
-            <attribute id="name"/>
             <attribute id="org_name"/>
           </attributes>
         </naming>
         <icon>assets/img/cost.svg</icon>
         <reconciliation>
           <attributes>
-            <attribute id="name"/>
             <attribute id="org_id"/>
             <attribute id="org_name"/>
           </attributes>
@@ -40,11 +38,6 @@
         <field id="org_name" xsi:type="AttributeExternalField">
           <extkey_attcode>org_id</extkey_attcode>
           <target_attcode>name</target_attcode>
-        </field>
-        <field id="name" xsi:type="AttributeString">
-          <sql>name</sql>
-          <default_value>Virtaul Machine Cost</default_value>
-          <is_null_allowed>false</is_null_allowed>
         </field>
         <field id="comment" xsi:type="AttributeText">
           <sql>comment</sql>
@@ -88,22 +81,22 @@
             <item id="org_id">
               <rank>10</rank>
             </item>
-            <item id="name">
+            <item id="vm_base_cost">
               <rank>20</rank>
             </item>
-            <item id="vm_base_cost">
+            <item id="vm_cpu_cost">
               <rank>30</rank>
             </item>
-            <item id="vm_cpu_cost">
+            <item id="vm_ram_cost">
               <rank>40</rank>
             </item>
-            <item id="vm_ram_cost">
+            <item id="vm_disk_cost">
               <rank>50</rank>
             </item>
-            <item id="vm_disk_cost">
-              <rank>60</rank>
+            <item id="comment">
+              <rank>90</rank>
             </item>
-          </items>
+        </items>
         </details>
         <default_search>
           <items>
@@ -113,6 +106,81 @@
           </items>
         </default_search>
       </presentation>
+    </class>
+    <class id="VirtualMachine" _delta="must_exist">
+      <fields>
+        <field id="vm_cost" xsi:type="AttributeString" _delta="define">
+          <sql>vm_cost</sql>
+          <default_value></default_value>
+          <is_null_allowed>true</is_null_allowed>
+        </field>
+      </fields>
+      <presentation>
+        <details>
+          <items>
+            <item id="col:col2">
+              <items>
+                <item id="fieldset:Server:otherinfo">
+                  <items>
+                    <item id="vm_cost" _delta="define">
+                      <rank>7</rank>
+                    </item>
+                  </items>
+                </item>
+              </items>
+            </item>
+          </items>
+        </details>
+      </presentation>
+      <methods>
+        <method id="CaluclateVMCost" _delta="define">
+          <static>false</static>
+          <access>protected</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[ protected function CalculateVMCost()
+            {
+              $this->Set('vm_cost', '15 €');
+            }]]></code>
+        </method>
+        <method id="OnUpdate" _delta="define">
+          <static>false</static>
+          <access>protected</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[ protected function OnUpdate()
+            {
+              $this->CalculateVMCost();
+              parent::OnUpdate();
+            }]]></code>
+        </method>
+        <method id="GetInitialStateAttributeFlags" _delta="define">
+          <static>false</static>
+          <access>public</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[ public function GetInitialStateAttributeFlags($sAttCode, &$aReasons = array())
+            {
+              // Hide the calculated field in object creation form
+              if (($sAttCode == 'vm_cost'))
+              {
+                return(OPT_ATT_HIDDEN | parent::GetInitialStateAttributeFlags($sAttCode, $aReasons));
+              }
+              return parent::GetInitialStateAttributeFlags($sAttCode, $aReasons);
+            }]]></code>
+        </method>
+        <method id="GetAttributeFlags" _delta="define">
+          <static>false</static>
+          <access>public</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[ public function GetAttributeFlags($sAttCode, &$aReasons = array(), $sTargetState = '')
+            {
+              // Force the computed field to be read-only, preventing it to be written
+              if ($sAttCode == 'vm_cost')
+              {
+                return(OPT_ATT_READONLY | parent::GetAttributeFlags($sAttCode, $aReasons, $sTargetState));
+              }
+              return parent::GetAttributeFlags($sAttCode, $aReasons, $sTargetState);
+            }]]></code>
+        </method>
+      </methods>
     </class>
   </classes>
   <menus>
