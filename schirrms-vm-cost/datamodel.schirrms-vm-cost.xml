@@ -139,7 +139,9 @@
           <type>Overload-DBObject</type>
           <code><![CDATA[ protected function CalculateVMCost()
             {
-              $this->Set('vm_cost', '15 €');
+							$iOrgId = $this->Get('org_id');
+							$aOrgCost = VirtualMachineCost::GetOrgCost($iOrgId);
+              $this->Set('vm_cost', $aOrgCost['vm_base_cost']);
             }]]></code>
         </method>
         <method id="OnUpdate" _delta="define">
